@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> a;
+    int x;
+
+    while (cin >> x) a.push_back(x);
+
+    int K = a.back();   
+    a.pop_back();       
+    int n = a.size();
+
+    long long sum = 0, best;
+
+ 
+    for (int i = 0; i < K; i++) sum += a[i];
+    best = sum;
+
+
+    for (int i = K; i < n; i++) {
+        sum += a[i] - a[i - K];
+        best = max(best, sum);
+    }
+
+    cout << best;
+}
