@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string S, T;
+    cin >> S >> T;
+
+    if (T.size() > S.size()) {
+        cout << "";
+        return 0;
+    }
+
+    vector<int> need(128, 0), window(128, 0);
+
+    for (char c : T)
+        need[c]++;
+
+    int required = T.size();
+    int left = 0, minLen = INT_MAX, start = 0;
+
+    for (int right = 0; right < S.size(); right++) {
+        char c = S[right];
+
+        if (need[c] > 0) {
+            window[c]++;
+            if (window[c] <= need[c])
+                required--;
+        }
+
+        while (required == 0) {
+            if (right - left + 1 < minLen) {
+                minLen = right - left + 1;
+                start = left;
+            }
+
+            char lc = S[left];
+            if (need[lc] > 0) {
+                window[lc]--;
+                if (window[lc] < need[lc])
+                    required++;
+            }
+            left++;
+        }
+    }
+
+    if (minLen == INT_MAX)
+        cout << "";
+    else
+        cout << S.substr(start, minLen);
+
+    return 0;
+}
