@@ -1,0 +1,12 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    long long N, K, M;
+    cin >> N >> K >> M;
+
+    long long g = __gcd(K, M);
+    cout << (N % g) << endl;
+
+    return 0;
+}
