@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+static const int MOD = 1000000007;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int R, C;
+    cin >> R >> C;
+
+    int K;
+    cin >> K;
+
+  
+    vector<vector<bool>> blocked(R + 1, vector<bool>(C + 1, false));
+
+    for (int i = 0; i < K; i++) {
+        int r, c;
+        cin >> r >> c;
+        if (r >= 0 && r <= R && c >= 0 && c <= C) {
+            blocked[r][c] = true;
+        }
+    }
+
+    
+    vector<vector<int>> dp(R + 1, vector<int>(C + 1, 0));
+
+  
+    if (!blocked[0][0]) {
+        dp[0][0] = 1;
+    }
+
+    for (int i = 0; i <= R; i++) {
+        for (int j = 0; j <= C; j++) {
+            if (blocked[i][j]) {
+                dp[i][j] = 0;
+                continue;
+            }
+            if (i == 0 && j == 0) continue;
+
+            long long ways = 0;
+            if (i > 0) ways += dp[i - 1][j];
+            if (j > 0) ways += dp[i][j - 1];
+
+            dp[i][j] = ways % MOD;
+        }
+    }
+
+    cout << dp[R][C] << "\n";
+    return 0;
+}
