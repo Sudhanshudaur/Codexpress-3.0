@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<int> arr(N);
+    for(int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
+
+    long long swaps = 0;
+
+    // Count inversions
+    for(int i = 0; i < N; i++) {
+        for(int j = i + 1; j < N; j++) {
+            if(arr[i] > arr[j]) {
+                swaps++;
+            }
+        }
+    }
+
+    cout << swaps << endl;
+    return 0;
+}
