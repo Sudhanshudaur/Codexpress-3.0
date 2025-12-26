@@ -1,0 +1,53 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Book {
+    string title;
+    string rarity;
+    int power;
+};
+
+int main() {
+    int n; cin>>n;
+    
+    Book array[n];
+    for(int i=0; i<n ; i++)
+    {
+        cin>>array[i].title>>array[i].rarity>>array[i].power;
+    }
+    vector<Book> epic;
+    vector<Book> comn;
+    vector<Book> rare;
+    for(int i=0; i<n ; i++)
+    {
+        if  (array[i].rarity=="Epic")  epic.push_back(array[i]);
+        else if (array[i].rarity=="Common")  comn.push_back(array[i]);
+        else  rare.push_back(array[i]);
+    }
+    
+    sort ( epic.begin( ), epic.end( ), [ ]( const auto& lhs, const auto& rhs )
+    {
+        return lhs.power > rhs.power;
+    });
+    sort ( comn.begin( ), comn.end( ), [ ]( const auto& lhs, const auto& rhs )
+    {
+        return lhs.power > rhs.power;
+    });
+    sort ( rare.begin( ), rare.end( ), [ ]( const auto& lhs, const auto& rhs )
+    {
+        return lhs.power > rhs.power;
+    });
+    for (auto i : epic)
+        cout << i.title << "\n";
+    
+    for (auto i : rare)
+        cout << i.title << "\n";
+    
+    for (auto i : comn)
+        cout << i.title << "\n";
+    return 0;
+}
