@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int partition(vector<int>& nums, int left, int right) {
+    int pivot = nums[right];
+    int i = left;
+
+    for (int j = left; j < right; j++) {
+        if (nums[j] > pivot) { 
+            swap(nums[i], nums[j]);
+            i++;
+        }
+    }
+    swap(nums[i], nums[right]);
+    return i;
+}
+
+int quickSelect(vector<int>& nums, int left, int right, int k) {
+    if (left <= right) {
+        int pivotIndex = partition(nums, left, right);
+
+        if (pivotIndex == k)
+            return nums[pivotIndex];
+        else if (pivotIndex > k)
+            return quickSelect(nums, left, pivotIndex - 1, k);
+        else
+            return quickSelect(nums, pivotIndex + 1, right, k);
+    }
+    return -1;
+}
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<int> scores(N);
+    for (int i = 0; i < N; i++)
+        cin >> scores[i];
+
+    int K;
+    cin >> K;
+
+    
+    cout << quickSelect(scores, 0, N - 1, K - 1);
+    return 0;
+}
