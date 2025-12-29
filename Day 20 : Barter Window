@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N;
+    cin >> N;
+
+    vector<pair<long long, long long>> trades(N);
+    for (int i = 0; i < N; i++) {
+        cin >> trades[i].first >> trades[i].second;
+    }
+
+    // Sort by ending time
+    sort(trades.begin(), trades.end(), [](auto &a, auto &b) {
+        return a.second < b.second;
+    });
+
+    long long lastEnd = -1;
+    int count = 0;
+
+    for (auto &trade : trades) {
+        if (trade.first >= lastEnd) {
+            count++;
+            lastEnd = trade.second;
+        }
+    }
+
+    cout << count << "\n";
+    return 0;
+}
