@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int n;
+        cin >> n;
+
+        int xorAll = 0;
+
+        // XOR all numbers from 0 to n
+        for (int i = 0; i <= n; i++) {
+            xorAll ^= i;
+        }
+
+        // XOR all given item IDs
+        for (int i = 0; i < n; i++) {
+            int x;
+            cin >> x;
+            xorAll ^= x;
+        }
+
+        // The result is the missing number
+        cout << xorAll << "\n";
+    }
+
+    return 0;
+}
