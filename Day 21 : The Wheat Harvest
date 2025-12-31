@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int R, C;
+    cin >> R >> C;
+
+    int arr[R][C];
+
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            cin >> arr[i][j];
+        }
+    }
+
+    int sum = 0;
+
+    // First row
+    for (int j = 0; j < C; j++)
+        sum += arr[0][j];
+
+    // Last row (if different from first)
+    if (R > 1) {
+        for (int j = 0; j < C; j++)
+            sum += arr[R - 1][j];
+    }
+
+    // First and last column (excluding corners)
+    for (int i = 1; i < R - 1; i++) {
+        sum += arr[i][0];
+        if (C > 1)
+            sum += arr[i][C - 1];
+    }
+
+    cout << sum;
+    return 0;
+}
