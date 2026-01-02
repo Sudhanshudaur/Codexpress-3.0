@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int m, n;
+        cin >> m >> n;
+
+        vector<int> mask(m);
+        for (int i = 0; i < m; i++) {
+            int x = 0;
+            for (int j = 0; j < n; j++) {
+                int b;
+                cin >> b;
+                if (b) x |= (1 << j);
+            }
+            mask[i] = x;
+        }
+
+        bool found = false;
+
+        // Case 1: single row (all zeros)
+        for (int i = 0; i < m; i++) {
+            if (mask[i] == 0) {
+                cout << "[" << i << "]\n";
+                found = true;
+                break;
+            }
+        }
+
+        if (found) continue;
+
+        // Case 2: pair of rows with disjoint 1s
+        for (int i = 0; i < m && !found; i++) {
+            for (int j = i + 1; j < m; j++) {
+                if ((mask[i] & mask[j]) == 0) {
+                    cout << "[" << i << "," << j << "]\n";
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            cout << "[]\n";
+        }
+    }
+
+    return 0;
+}
