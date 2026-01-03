@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N, M;
+    long long P;
+    cin >> N >> M >> P;
+
+    vector<vector<long long>> a(N + 1, vector<long long>(M + 1, 0));
+    vector<vector<long long>> pref(N + 1, vector<long long>(M + 1, 0));
+
+    // Read input
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= M; j++) {
+            cin >> a[i][j];
+        }
+    }
+
+    // Build prefix sum
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= M; j++) {
+            pref[i][j] = a[i][j]
+                       + pref[i - 1][j]
+                       + pref[i][j - 1]
+                       - pref[i - 1][j - 1];
+        }
+    }
+
+    auto canDestroy = [&](int S) {
+        for (int i = 1; i + S - 1 <= N; i++) {
+            for (int j = 1; j + S - 1 <= M; j++) {
+                long long sum =
+                    pref[i + S - 1][j + S - 1]
+                  - pref[i - 1][j + S - 1]
+                  - pref[i + S - 1][j - 1]
+                  + pref[i - 1][j - 1];
+
+                if (sum <= P)
+                    return true;
+            }
+        }
+        return false;
+    };
+
+    int low = 1, high = min(N, M), ans = 0;
+
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (canDestroy(mid)) {
+            ans = mid;
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    cout << ans << "\n";
+    return 0;
+}
