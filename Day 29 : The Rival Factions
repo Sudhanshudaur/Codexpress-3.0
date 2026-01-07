@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    vector<long long> R(N), B(N);
+
+    for (int i = 0; i < N; i++)
+        cin >> R[i];
+
+    for (int i = 0; i < N; i++)
+        cin >> B[i];
+
+    unordered_map<long long, long long> freq;
+    freq[0] = 1;        // prefix sum 0 occurs once initially
+
+    long long prefix = 0;
+    long long count = 0;
+
+    for (int i = 0; i < N; i++) {
+        prefix += (R[i] - B[i]);
+
+        if (freq.find(prefix) != freq.end())
+            count += freq[prefix];
+
+        freq[prefix]++;
+    }
+
+    cout << count;
+
+    return 0;
+}
