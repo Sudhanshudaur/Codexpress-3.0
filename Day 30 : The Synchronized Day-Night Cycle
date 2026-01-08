@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N, M;
+    cin >> N >> M;
+
+    vector<long long> A(N);
+    for (int i = 0; i < N; i++) {
+        cin >> A[i];
+    }
+
+    // Map to store frequency of (balance, modSum)
+    map<pair<int, int>, long long> freq;
+
+    int balance = 0;        // odd = +1, even = -1
+    int modSum = 0;         // prefix sum mod M
+    long long result = 0;
+
+    // Initial prefix (before array starts)
+    freq[{0, 0}] = 1;
+
+    for (int i = 0; i < N; i++) {
+        // Update balance
+        if (A[i] % 2 == 0)
+            balance--;
+        else
+            balance++;
+
+        // Update modulo sum
+        modSum = (modSum + A[i]) % M;
+
+        // Count valid previous prefixes
+        result += freq[{balance, modSum}];
+
+        // Store current prefix state
+        freq[{balance, modSum}]++;
+    }
+
+    cout << result << "\n";
+    return 0;
+}
