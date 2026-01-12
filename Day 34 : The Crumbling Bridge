@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> height(n);
+    for (int i = 0; i < n; i++) {
+        cin >> height[i];
+    }
+
+    int left = 0, right = n - 1;
+    long long maxSafety = 0;
+
+    while (left < right) {
+        long long safety =
+            (long long)(right - left) * min(height[left], height[right]);
+        maxSafety = max(maxSafety, safety);
+
+        if (height[left] < height[right]) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+
+    cout << maxSafety << endl;
+    return 0;
+}
