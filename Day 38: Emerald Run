@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int n;
+        cin >> n;
+
+        vector<int> a(n);
+        for (int i = 0; i < n; i++) {
+            cin >> a[i];
+        }
+
+        unordered_map<int, int> freq;
+        long long currentSum = 0, maxSum = 0;
+        int left = 0;
+
+        for (int right = 0; right < n; right++) {
+            freq[a[right]]++;
+            currentSum += a[right];
+
+            // If duplicate found, shrink window from left
+            while (freq[a[right]] > 1) {
+                freq[a[left]]--;
+                currentSum -= a[left];
+                left++;
+            }
+
+            maxSum = max(maxSum, currentSum);
+        }
+
+        cout << maxSum << "\n";
+    }
+
+    return 0;
+}
