@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+    while (T--) {
+        int n, k;
+        cin >> n >> k;
+
+        vector<int> nums(n);
+        for (int i = 0; i < n; i++) {
+            cin >> nums[i];
+        }
+
+        unordered_map<int, long long> freq;
+        freq[0] = 1;
+
+        int prefixSum = 0;
+        long long result = 0;
+
+        for (int x : nums) {
+            if (x % 2 != 0) {
+                prefixSum++;
+            }
+
+            if (freq.count(prefixSum - k)) {
+                result += freq[prefixSum - k];
+            }
+
+            freq[prefixSum]++;
+        }
+
+        cout << result << "\n";
+    }
+    return 0;
+}
