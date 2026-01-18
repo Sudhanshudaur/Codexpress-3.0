@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+
+    while (t--) {
+        int n;
+        cin >> n;
+
+        vector<long long> blocks(n);
+        for (int i = 0; i < n; i++) {
+            cin >> blocks[i];
+        }
+
+        long long T;
+        cin >> T;
+
+        int left = 0;
+        long long sum = 0;
+        int maxLen = -1;
+
+        for (int right = 0; right < n; right++) {
+            sum += blocks[right];
+
+            while (sum >= T) {
+                maxLen = max(maxLen, right - left + 1);
+                sum -= blocks[left];
+                left++;
+            }
+        }
+
+        cout << maxLen << "\n";
+    }
+
+    return 0;
+}
