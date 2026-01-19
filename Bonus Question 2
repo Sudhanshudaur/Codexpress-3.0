@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t;
+    cin >> t;
+
+    while (t--) {
+        int n;
+        cin >> n;
+
+        string s;
+        cin >> s;
+
+        int females = 0, males = 0;
+
+        for (char c : s) {
+            if (c == 'F') females++;
+            else males++;
+        }
+
+        int maxTeamsBySize = (females + males) / 4;
+        int maxTeamsByFemales = females;
+
+        cout << min(maxTeamsBySize, maxTeamsByFemales) << '\n';
+    }
+
+    return 0;
+}
