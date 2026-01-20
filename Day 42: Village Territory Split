@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+
+    while (t--) {
+        int n;
+        cin >> n;
+
+        vector<int> cells;
+        int totalSum = 0;
+
+        // Read grid and flatten it
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                int x;
+                cin >> x;
+                cells.push_back(x);
+                totalSum += x;
+            }
+        }
+
+        int maxSum = totalSum;
+        vector<bool> dp(maxSum + 1, false);
+        dp[0] = true;
+
+        // Subset Sum DP
+        for (int val : cells) {
+            for (int s = maxSum; s >= val; s--) {
+                dp[s] = dp[s] || dp[s - val];
+            }
+        }
+
+        int ans = INT_MAX;
+
+        // Find minimum difference
+        for (int s = 1; s <= totalSum / 2; s++) {
+            if (dp[s]) {
+                ans = min(ans, abs(totalSum - 2 * s));
+            }
+        }
+
+        cout << ans << "\n";
+    }
+
+    return 0;
+}
