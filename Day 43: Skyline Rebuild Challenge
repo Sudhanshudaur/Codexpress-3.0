@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long fact(int n) {
+    long long res = 1;
+    for (int i = 1; i <= n; i++)
+        res *= i;
+    return res;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+
+    while (t--) {
+        int n;
+        cin >> n;
+
+        vector<int> heights(n);
+        for (int i = 0; i < n; i++)
+            cin >> heights[i];
+
+        long long k;
+        cin >> k;
+
+        // If no rearrangements allowed
+        if (k == 0) {
+            cout << 1 << "\n";
+            continue;
+        }
+
+        unordered_map<int, int> freq;
+        for (int h : heights)
+            freq[h]++;
+
+        long long ans = fact(n);
+        for (auto &p : freq)
+            ans /= fact(p.second);
+
+        cout << ans << "\n";
+    }
+    return 0;
+}
