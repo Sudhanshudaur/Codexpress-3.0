@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n;
+vector<vector<int>> grid;
+vector<vector<bool>> visited;
+
+int dx[4] = {1, -1, 0, 0};
+int dy[4] = {0, 0, 1, -1};
+
+int dfs(int x, int y) {
+    if (x < 0 || y < 0 || x >= n || y >= n)
+        return 0;
+    if (visited[x][y] || grid[x][y] == 2)
+        return 0;
+
+    visited[x][y] = true;
+    int count = (grid[x][y] == 1) ? 1 : 0;
+
+    for (int d = 0; d < 4; d++) {
+        count += dfs(x + dx[d], y + dy[d]);
+    }
+    return count;
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        cin >> n;
+        grid.assign(n, vector<int>(n));
+        visited.assign(n, vector<bool>(n, false));
+
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                cin >> grid[i][j];
+
+        int maxVillagers = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1 && !visited[i][j]) {
+                    maxVillagers = max(maxVillagers, dfs(i, j));
+                }
+            }
+        }
+
+        cout << maxVillagers << endl;
+    }
+    return 0;
+}
