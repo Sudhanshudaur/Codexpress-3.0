@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+
+    while (t--) {
+        int n;
+        cin >> n;
+
+        vector<long long> clearances(n);
+        for (int i = 0; i < n; i++) {
+            cin >> clearances[i];
+        }
+
+        long long build_height;
+        cin >> build_height;
+
+        // Using lower_bound to find smallest clearance >= build_height
+        auto it = lower_bound(clearances.begin(), clearances.end(), build_height);
+
+        if (it != clearances.end()) {
+            cout << *it << "\n";
+        } else {
+            cout << -1 << "\n";
+        }
+    }
+
+    return 0;
+}
