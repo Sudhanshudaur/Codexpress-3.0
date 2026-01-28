@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int n, target;
+        cin >> n >> target;
+
+        vector<int> heights(n);
+        int maxHeight = 0;
+
+        for (int i = 0; i < n; i++) {
+            cin >> heights[i];
+            maxHeight = max(maxHeight, heights[i]);
+        }
+
+        int left = 0, right = maxHeight;
+        int bestX = 0;
+        long long bestDiff = LLONG_MAX;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            long long sum = 0;
+            for (int h : heights) {
+                sum += min(h, mid);
+            }
+
+            long long diff = llabs(sum - target);
+
+            // Update best answer
+            if (diff < bestDiff || (diff == bestDiff && mid < bestX)) {
+                bestDiff = diff;
+                bestX = mid;
+            }
+
+            if (sum < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        cout << bestX << "\n";
+    }
+
+    return 0;
+}
