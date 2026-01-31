@@ -1,0 +1,29 @@
+#include <iostream>
+
+using namespace std;
+
+void solve() {
+    long long n;
+    if (!(cin >> n)) return;
+    
+    // As established, Alex wins only if N is a multiple of 6
+    if (n % 6 == 0) {
+        cout << "Alex" << endl;
+    } else {
+        cout << "Steve" << endl;
+    }
+}
+
+int main() {
+    // Faster I/O for large number of test cases
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t;
+    if (cin >> t) {
+        while (t--) {
+            solve();
+        }
+    }
+    return 0;
+}
