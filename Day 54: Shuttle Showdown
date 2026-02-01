@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        long long X, Y;
+        cin >> X >> Y;
+        
+        if (X == 1 && Y == 2)  cout << "Lakshya\n";
+        if (X == 2 && Y == 1)  cout << "Lakshya\n";
+
+        if (X > Y )      cout << "Lakshya\n";
+        else if (Y > X)  cout << "Kidambi\n";
+        else if (X == Y && X%2 == 1)  cout << "Lakshya\n";
+        else  cout << "Kidambi\n";
+    }
+
+    return 0;
+}
