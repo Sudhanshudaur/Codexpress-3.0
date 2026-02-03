@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Memoization maps for Mario and Luigi states
+map<vector<int>, bool> dpMario, dpLuigi;
+
+// Normalize state: remove zeros, sort piles
+vector<int> normalize(vector<int> piles) {
+    vector<int> res;
+    for (int x : piles) if (x > 0) res.push_back(x);
+    sort(res.begin(), res.end());
+    return res;
+}
+
+bool solveMario(vector<int> piles);
+bool solveLuigi(vector<int> piles);
+
+bool solveMario(vector<int> piles) {
+    piles = normalize(piles);
+    if (dpMario.count(piles)) return dpMario[piles];
+    // Mario can only take even numbers >= 2
+    for (int i = 0; i < (int)piles.size(); i++) {
+        for (int take = 2; take <= piles[i]; take += 2) {
+            vector<int> next = piles;
+            next[i] -= take;
+            if (!solveLuigi(next)) return dpMario[piles] = true;
+        }
+    }
+    return dpMario[piles] = false; // no winning move
+}
+
+bool solveLuigi(vector<int> piles) {
+    piles = normalize(piles);
+    if (dpLuigi.count(piles)) return dpLuigi[piles];
+    // Luigi can only take odd numbers >= 1
+    for (int i = 0; i < (int)piles.size(); i++) {
+        for (int take = 1; take <= piles[i]; take += 2) {
+            vector<int> next = piles;
+            next[i] -= take;
+            if (!solveMario(next)) return dpLuigi[piles] = true;
+        }
+    }
+    return dpLuigi[piles] = false; // no winning move
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T; cin >> T;
+    while (T--) {
+        int N; string P;
+        cin >> N >> P;
+        vector<int> piles(N);
+        for (int i = 0; i < N; i++) cin >> piles[i];
+
+        bool winner;
+        if (P == "Mario") winner = solveMario(piles);
+        else winner = solveLuigi(piles);
+
+        cout << (winner ? P : (P == "Mario" ? "Luigi" : "Mario")) << "\n";
+    }
+    return 0;
+}
