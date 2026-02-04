@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        string num;
+        cin >> num;
+
+        vector<char> odd, even;
+
+        // Separate digits by parity
+        for (char c : num) {
+            int d = c - '0';
+            if (d % 2 == 0)
+                even.push_back(c);
+            else
+                odd.push_back(c);
+        }
+
+        // Sort in descending order
+        sort(odd.begin(), odd.end(), greater<char>());
+        sort(even.begin(), even.end(), greater<char>());
+
+        int oi = 0, ei = 0;
+
+        // Rebuild the answer
+        for (int i = 0; i < num.size(); i++) {
+            int d = num[i] - '0';
+
+            if (d % 2 == 0) {
+                num[i] = even[ei++];
+            } else {
+                num[i] = odd[oi++];
+            }
+        }
+
+        cout << num << "\n";
+    }
+
+    return 0;
+}
