@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        string s;
+        cin >> s;
+
+        stack<char> st;
+
+        for (char ch : s) {
+            if (!st.empty()) {
+                char top = st.top();
+
+                // Check if we can remove "AB" or "CD"
+                if ((top == 'A' && ch == 'B') ||
+                    (top == 'C' && ch == 'D')) {
+                    st.pop(); // Remove the pair
+                    continue;
+                }
+            }
+            st.push(ch);
+        }
+
+        cout << st.size() << "\n";
+    }
+
+    return 0;
+}
