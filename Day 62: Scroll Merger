@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to check if a is subsequence of b
+bool isSubsequence(const string &a, const string &b) {
+    int i = 0, j = 0;
+
+    while (i < a.size() && j < b.size()) {
+        if (a[i] == b[j]) {
+            i++;
+        }
+        j++;
+    }
+
+    return (i == a.size());
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        string s1, s2;
+        cin >> s1 >> s2;
+
+        // Check both ways
+        if (isSubsequence(s1, s2) || isSubsequence(s2, s1)) {
+            cout << "YES\n";
+        } else {
+            cout << "NO\n";
+        }
+    }
+
+    return 0;
+}
