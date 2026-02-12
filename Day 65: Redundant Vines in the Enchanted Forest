@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool hasRedundantBrackets(string s) {
+    // Check if there is at least one bracket
+    bool hasBracket = false;
+    for (char c : s) {
+        if (c == '(' || c == ')') {
+            hasBracket = true;
+            break;
+        }
+    }
+
+    // If no brackets, return false
+    if (!hasBracket)
+        return false;
+
+    stack<char> st;
+
+    for (char ch : s) {
+
+        // Push everything except ')'
+        if (ch != ')') {
+            st.push(ch);
+        }
+        else {
+            // When ')' found
+            bool hasOperator = false;
+
+            // Check content inside brackets
+            while (!st.empty() && st.top() != '(') {
+                char top = st.top();
+                st.pop();
+
+                if (top == '+' || top == '-' ||
+                    top == '*' || top == '/') {
+                    hasOperator = true;
+                }
+            }
+
+            // Remove '('
+            if (!st.empty())
+                st.pop();
+
+            // If no operator, brackets are redundant
+            if (!hasOperator)
+                return true;
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        string s;
+        cin >> s;
+
+        if (hasRedundantBrackets(s))
+            cout << "true\n";
+        else
+            cout << "false\n";
+    }
+
+    return 0;
+}
