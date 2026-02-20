@@ -1,0 +1,78 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+// Structure for the Tree of Wisdom
+struct Node {
+    int data;
+    Node *left, *right;
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+// Function to plant (insert) numbers into the BST
+Node* insert(Node* root, int val) {
+    if (!root) return new Node(val);
+    if (val < root->data)
+        root->left = insert(root->left, val);
+    else
+        root->right = insert(root->right, val);
+    return root;
+}
+
+// Global variable to store the Seer's discovery
+int maxDiff;
+
+// Function to find min and max in subtrees while calculating difference
+// Returns a pair: {min_val, max_val} in the subtree rooted at 'node'
+pair<int, int> findMaxDifference(Node* node) {
+    if (!node) return {1001, -1001}; // Beyond constraints
+
+    int currentMin = node->data;
+    int currentMax = node->data;
+
+    if (node->left) {
+        pair<int, int> leftRes = findMaxDifference(node->left);
+        // Compare ancestor with descendant min/max
+        maxDiff = max({maxDiff, abs(node->data - leftRes.first), abs(node->data - leftRes.second)});
+        currentMin = min(currentMin, leftRes.first);
+        currentMax = max(currentMax, leftRes.second);
+    }
+
+    if (node->right) {
+        pair<int, int> rightRes = findMaxDifference(node->right);
+        // Compare ancestor with descendant min/max
+        maxDiff = max({maxDiff, abs(node->data - rightRes.first), abs(node->data - rightRes.second)});
+        currentMin = min(currentMin, rightRes.first);
+        currentMax = max(currentMax, rightRes.second);
+    }
+
+    return {currentMin, currentMax};
+}
+
+void solve() {
+    int n;
+    cin >> n;
+    Node* root = nullptr;
+    maxDiff = 0;
+
+    for (int i = 0; i < n; i++) {
+        int val;
+        cin >> val;
+        root = insert(root, val);
+    }
+
+    findMaxDifference(root);
+    cout << maxDiff << endl;
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
+}
