@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// The building blocks of McQueen's track
+struct Node {
+    int val;
+    Node *left, *right;
+    Node(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+// Custom BST Insertion: Equals go LEFT
+Node* insert(Node* root, int val) {
+    if (!root) return new Node(val);
+    if (val <= root->val) 
+        root->left = insert(root->left, val);
+    else 
+        root->right = insert(root->right, val);
+    return root;
+}
+
+int maxZigZag = 0;
+
+/**
+ * @param node Current checkpoint
+ * @param isLeft Did we just come from a left turn?
+ * @param length Current consecutive zigzag turns
+ */
+void findPath(Node* node, bool isLeft, int length) {
+    if (!node) return;
+
+    maxZigZag = max(maxZigZag, length);
+
+    if (isLeft) {
+        // If we came from left, we must go RIGHT to continue the streak
+        findPath(node->right, false, length + 1);
+        // Or start fresh by going LEFT again
+        findPath(node->left, true, 1);
+    } else {
+        // If we came from right, we must go LEFT to continue the streak
+        findPath(node->left, true, length + 1);
+        // Or start fresh by going RIGHT again
+        findPath(node->right, false, 1);
+    }
+}
+
+void solve() {
+    int n;
+    if (!(cin >> n)) return;
+    
+    Node* root = NULL;
+    for (int i = 0; i < n; ++i) {
+        int val;
+        cin >> val;
+        root = insert(root, val);
+    }
+
+    maxZigZag = 0;
+    if (root) {
+        // Start the race! McQueen can choose to go left or right from the start
+        findPath(root->left, true, 1);
+        findPath(root->right, false, 1);
+    }
+
+    cout << maxZigZag << endl;
+}
+
+int main() {
+    int t;
+    if (!(cin >> t)) return 0;
+    while (t--) {
+        solve();
+    }
+    return 0;
+}
