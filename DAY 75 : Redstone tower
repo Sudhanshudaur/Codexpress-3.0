@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+// Node structure for the Redstone Tower BST
+struct Node {
+    int id;
+    Node *left, *right;
+    Node(int val) : id(val), left(nullptr), right(nullptr) {}
+};
+
+// Custom insertion rule: duplicates go to the left subtree
+Node* insert(Node* root, int id) {
+    if (!root) return new Node(id);
+    if (id <= root->id) {
+        root->left = insert(root->left, id);
+    } else {
+        root->right = insert(root->right, id);
+    }
+    return root;
+}
+
+void solve() {
+    int n;
+    if (!(cin >> n)) return;
+    
+    Node* root = nullptr;
+    for (int i = 0; i < n; i++) {
+        int id;
+        cin >> id;
+        root = insert(root, id);
+    }
+
+    if (!root) {
+        cout << 0 << endl;
+        return;
+    }
+
+    // BFS to find the sum of each level
+    queue<Node*> q;
+    q.push(root);
+    
+    long long maxSum = LLONG_MIN;
+    int maxLevel = 1;
+    int currentLevel = 1;
+
+    while (!q.empty()) {
+        int levelSize = q.size();
+        long long currentLevelSum = 0;
+
+        for (int i = 0; i < levelSize; i++) {
+            Node* curr = q.front();
+            q.pop();
+            
+            currentLevelSum += curr->id;
+
+            if (curr->left) q.push(curr->left);
+            if (curr->right) q.push(curr->right);
+        }
+
+        // Update max sum and smallest level index
+        if (currentLevelSum > maxSum) {
+            maxSum = currentLevelSum;
+            maxLevel = currentLevel;
+        }
+        
+        currentLevel++;
+    }
+
+    cout << maxLevel << endl;
+}
+
+int main() {
+    int t;
+    if (!(cin >> t)) return 0;
+    while (t--) {
+        solve();
+    }
+    return 0;
+}
