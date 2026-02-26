@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> adj[55];
+bool visited[55];
+
+int nodeCount, edgeCount;
+
+void dfs(int node) {
+    visited[node] = true;
+    nodeCount++;
+    edgeCount += adj[node].size();
+    
+    for (int neighbor : adj[node]) {
+        if (!visited[neighbor]) {
+            dfs(neighbor);
+        }
+    }
+}
+
+int main() {
+    int m, n;
+    cin >> m >> n;
+
+    // Build graph
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    int completeGroups = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            nodeCount = 0;
+            edgeCount = 0;
+
+            dfs(i);
+
+            // Each edge counted twice in undirected graph
+            edgeCount /= 2;
+
+            // Check if complete graph
+            if (edgeCount == nodeCount * (nodeCount - 1) / 2) {
+                completeGroups++;
+            }
+        }
+    }
+
+    cout << completeGroups << endl;
+
+    return 0;
+}
