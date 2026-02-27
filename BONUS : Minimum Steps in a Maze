@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int minSteps(vector<int>& arr) {
+    int n = arr.size();
+    if (n == 1) return 0;
+
+    unordered_map<int, vector<int>> mp;
+
+    // Store indices for each value
+    for (int i = 0; i < n; i++) {
+        mp[arr[i]].push_back(i);
+    }
+
+    vector<bool> visited(n, false);
+    queue<pair<int, int>> q; // {index, steps}
+
+    q.push({0, 0});
+    visited[0] = true;
+
+    while (!q.empty()) {
+        auto [index, steps] = q.front();
+        q.pop();
+
+        // If reached last chamber
+        if (index == n - 1)
+            return steps;
+
+        // Move forward
+        if (index + 1 < n && !visited[index + 1]) {
+            visited[index + 1] = true;
+            q.push({index + 1, steps + 1});
+        }
+
+        // Move backward
+        if (index - 1 >= 0 && !visited[index - 1]) {
+            visited[index - 1] = true;
+            q.push({index - 1, steps + 1});
+        }
+
+        // Teleport to same value chambers
+        for (int nextIndex : mp[arr[index]]) {
+            if (!visited[nextIndex]) {
+                visited[nextIndex] = true;
+                q.push({nextIndex, steps + 1});
+            }
+        }
+
+        // Clear to avoid reprocessing same value group
+        mp[arr[index]].clear();
+    }
+
+    return -1; // Should never reach here
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int N;
+        cin >> N;
+
+        vector<int> arr(N);
+        for (int i = 0; i < N; i++) {
+            cin >> arr[i];
+        }
+
+        cout << minSteps(arr) << "\n";
+    }
+
+    return 0;
+}
