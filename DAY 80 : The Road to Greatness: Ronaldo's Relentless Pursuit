@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int N;
+    cin >> N;
+
+    vector<vector<long long>> T(N, vector<long long>(N));
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            cin >> T[i][j];
+        }
+    }
+
+    // Floyd-Warshall Algorithm
+    for (int k = 0; k < N; k++) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (T[i][j] > T[i][k] + T[k][j]) {
+                    T[i][j] = T[i][k] + T[k][j];
+                }
+            }
+        }
+    }
+
+    int M;
+    cin >> M;
+
+    while (M--) {
+        int S, G, D;
+        cin >> S >> G >> D;
+
+        long long routineTime = T[S][G] + T[G][D];
+        long long directTime = T[S][D];
+        long long savedTime = routineTime - directTime;
+
+        cout << routineTime << " " << savedTime << "\n";
+    }
+
+    return 0;
+}
