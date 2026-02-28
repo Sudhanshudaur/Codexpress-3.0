@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int N;
+    cin >> N;
+
+    vector<vector<long long>> dist(N, vector<long long>(N));
+
+    // Read matrix (direct travel times)
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            cin >> dist[i][j];
+        }
+    }
+
+    // Floyd–Warshall to compute shortest paths
+    for(int k = 0; k < N; k++) {
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < N; j++) {
+                if(dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+
+    int M;
+    cin >> M;
+
+    while(M--) {
+        int S, G, D;
+        cin >> S >> G >> D;
+
+        long long flawed_time = dist[S][G] + dist[G][D];
+        long long direct_time = dist[S][D];
+        long long saved = flawed_time - direct_time;
+
+        cout << flawed_time << " " << saved << "\n";
+    }
+
+    return 0;
+}
