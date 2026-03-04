@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+    unordered_set<string> dict(wordList.begin(), wordList.end());
+    
+    // If endWord not present, impossible
+    if (dict.find(endWord) == dict.end())
+        return 0;
+
+    queue<pair<string, int>> q;
+    q.push({beginWord, 1});
+
+    while (!q.empty()) {
+        auto front = q.front();
+        q.pop();
+
+        string word = front.first;
+        int steps = front.second;
+
+        if (word == endWord)
+            return steps;
+
+        for (int i = 0; i < word.size(); i++) {
+            string temp = word;
+
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+                temp[i] = ch;
+
+                if (dict.find(temp) != dict.end()) {
+                    q.push({temp, steps + 1});
+                    dict.erase(temp);  // mark visited
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+int main() {
+    int T;
+    cin >> T;
+
+    while (T--) {
+        string beginWord, endWord;
+        cin >> beginWord >> endWord;
+
+        int n;
+        cin >> n;
+
+        vector<string> wordList(n);
+        for (int i = 0; i < n; i++) {
+            cin >> wordList[i];
+        }
+
+        cout << ladderLength(beginWord, endWord, wordList) << endl;
+    }
+
+    return 0;
+}
