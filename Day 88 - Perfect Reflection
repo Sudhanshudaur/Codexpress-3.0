@@ -1,0 +1,144 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+struct TreeNode {
+
+    int val;
+
+    TreeNode* left;
+
+    TreeNode* right;
+
+    
+
+    TreeNode(int x) {
+
+        val = x;
+
+        left = NULL;
+
+        right = NULL;
+
+    }
+
+};
+
+// Function to check mirror condition
+
+bool isMirror(TreeNode* t1, TreeNode* t2) {
+
+    if (!t1 && !t2) return true;
+
+    if (!t1 || !t2) return false;
+
+    if (t1->val != t2->val) return false;
+
+    
+
+    return isMirror(t1->left, t2->right) &&
+
+           isMirror(t1->right, t2->left);
+
+}
+
+bool isSymmetric(TreeNode* root) {
+
+    if (!root) return true;
+
+    return isMirror(root->left, root->right);
+
+}
+
+// Build tree from level order
+
+TreeNode* buildTree(vector<string>& nodes) {
+
+    if (nodes.empty() || nodes[0] == "null")
+
+        return NULL;
+
+    TreeNode* root = new TreeNode(stoi(nodes[0]));
+
+    queue<TreeNode*> q;
+
+    q.push(root);
+
+    size_t i = 1;  // FIXED TYPE
+
+    while (!q.empty() && i < nodes.size()) {
+
+        TreeNode* current = q.front();
+
+        q.pop();
+
+        if (i < nodes.size() && nodes[i] != "null") {
+
+            current->left = new TreeNode(stoi(nodes[i]));
+
+            q.push(current->left);
+
+        }
+
+        i++;
+
+        if (i < nodes.size() && nodes[i] != "null") {
+
+            current->right = new TreeNode(stoi(nodes[i]));
+
+            q.push(current->right);
+
+        }
+
+        i++;
+
+    }
+
+    return root;
+
+}
+int main() {
+
+    int t;
+
+    cin >> t;
+
+    
+
+    while (t--) {
+
+        int n;
+
+        cin >> n;
+
+        
+
+        vector<string> nodes(n);
+
+        for (int i = 0; i < n; i++) {
+
+            cin >> nodes[i];
+
+        }
+
+        
+
+        TreeNode* root = buildTree(nodes);
+
+        
+
+        if (isSymmetric(root))
+
+            cout << "true\n";
+
+        else
+
+            cout << "false\n";
+
+    }
+
+    
+
+    return 0;
+
+}
