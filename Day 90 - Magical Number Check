@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        long long c;
+        cin >> c;
+
+        long long a = 0;
+        long long b = sqrt(c);
+        bool found = false;
+
+        while (a <= b) {
+            long long sum = a*a + b*b;
+
+            if (sum == c) {
+                found = true;
+                break;
+            }
+            else if (sum < c) {
+                a++;
+            }
+            else {
+                b--;
+            }
+        }
+
+        if (found) cout << "yes\n";
+        else cout << "no\n";
+    }
+
+    return 0;
+}
