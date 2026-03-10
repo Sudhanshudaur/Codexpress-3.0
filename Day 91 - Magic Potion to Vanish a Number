@@ -1,0 +1,47 @@
+#include <iostream>
+#include <bitset>
+
+using namespace std;
+
+typedef long long ll;
+
+int solve() {
+    ll num1, num2;
+    cin >> num1 >> num2;
+
+    // We iterate through the number of spells k.
+    // k shouldn't exceed ~40 given the constraints of 10^9.
+    for (int k = 1; k < 1000; ++k) {
+        ll target = num1 - (ll)k * num2;
+
+        // If target is negative, we've overshot; further k will only 
+        // make it more negative (if num2 is positive) or it's unreachable.
+        if (target < k) {
+            // However, if num2 is negative, target grows. 
+            // We only break if it's impossible for target to ever catch up.
+            if (num2 >= 0) return -1;
+            continue; 
+        }
+
+        // Count set bits in the target
+        int set_bits = __builtin_popcountll(target);
+
+        // Valid if:
+        // 1. We have at least enough set bits to form k terms (set_bits <= k)
+        // 2. The value is large enough that we can decompose powers of 2 (target >= k)
+        if (set_bits <= k) {
+            return k;
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    int T;
+    if (!(cin >> T)) return 0;
+    while (T--) {
+        cout << solve() << endl;
+    }
+    return 0;
+}
