@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int N, X;
+        cin >> N >> X;
+
+        vector<int> coins(N);
+        for (int i = 0; i < N; i++) {
+            cin >> coins[i];
+        }
+
+        vector<int> dp(X + 1, INT_MAX);
+        dp[0] = 0;
+
+        for (int coin : coins) {
+            for (int i = coin; i <= X; i++) {
+                if (dp[i - coin] != INT_MAX) {
+                    dp[i] = min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+
+        if (dp[X] == INT_MAX) cout << -1 << "\n";
+        else cout << dp[X] << "\n";
+    }
+
+    return 0;
+}
