@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Job {
+    int deadline;
+    int profit;
+};
+
+bool cmp(Job a, Job b) {
+    return a.profit > b.profit;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int N;
+        cin >> N;
+
+        vector<Job> jobs(N);
+        int maxDeadline = 0;
+
+        for (int i = 0; i < N; i++) {
+            cin >> jobs[i].deadline >> jobs[i].profit;
+            maxDeadline = max(maxDeadline, jobs[i].deadline);
+        }
+
+        sort(jobs.begin(), jobs.end(), cmp);
+
+        vector<int> slot(maxDeadline + 1, -1);
+
+        int totalProfit = 0;
+        int countJobs = 0;
+
+        for (int i = 0; i < N; i++) {
+            for (int j = min(maxDeadline, jobs[i].deadline); j >= 1; j--) {
+                if (slot[j] == -1) {
+                    slot[j] = i;
+                    totalProfit += jobs[i].profit;
+                    countJobs++;
+                    break;
+                }
+            }
+        }
+
+        cout << totalProfit << " " << countJobs << "\n";
+    }
+
+    return 0;
+}
