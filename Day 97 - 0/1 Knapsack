@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+void solve() {
+    int N, W;
+    if (!(cin >> N >> W)) return;
+
+    // dp[i] stores the maximum value for capacity i
+    // Initialize with 0 as no items are selected yet
+    vector<int> dp(W + 1, 0);
+
+    for (int i = 0; i < N; ++i) {
+        int val, wt;
+        cin >> val >> wt;
+
+        // Iterate backwards to ensure each item is only counted once per test case
+        for (int j = W; j >= wt; --j) {
+            dp[j] = max(dp[j], dp[j - wt] + val);
+        }
+    }
+
+    cout << dp[W] << endl;
+}
+
+int main() {
+    // Optimization for faster I/O
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    if (!(cin >> T)) return 0;
+    while (T--) {
+        solve();
+    }
+    return 0;
+}
