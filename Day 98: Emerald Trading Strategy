@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int n;
+        cin >> n;
+
+        vector<int> colors(n);
+        for (int i = 0; i < n; i++) {
+            cin >> colors[i];
+        }
+
+        int profit = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (colors[i] > colors[i - 1]) {
+                profit += (colors[i] - colors[i - 1]);
+            }
+        }
+
+        cout << profit << "\n";
+    }
+
+    return 0;
+}
