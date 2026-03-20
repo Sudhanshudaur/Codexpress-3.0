@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    unordered_map<int, bool> memo;
+    int maxNum;
+
+    bool canWin(int mask, int remaining) {
+        if (memo.count(mask)) return memo[mask];
+
+        for (int i = 1; i <= maxNum; i++) {
+            int bit = 1 << (i - 1);
+
+            // if number i is not used
+            if (!(mask & bit)) {
+                // if picking i wins immediately
+                if (i >= remaining) {
+                    return memo[mask] = true;
+                }
+
+                // if opponent loses after this move
+                if (!canWin(mask | bit, remaining - i)) {
+                    return memo[mask] = true;
+                }
+            }
+        }
+
+        return memo[mask] = false;
+    }
+
+    bool solve(int maxCoinBag, int targetTreasure) {
+        if (targetTreasure <= 0) return true;
+
+        int sum = maxCoinBag * (maxCoinBag + 1) / 2;
+        if (sum < targetTreasure) return false;
+
+        maxNum = maxCoinBag;
+        memo.clear();
+
+        return canWin(0, targetTreasure);
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int maxCoinBag, targetTreasure;
+        cin >> maxCoinBag >> targetTreasure;
+
+        Solution obj;
+        bool res = obj.solve(maxCoinBag, targetTreasure);
+
+        cout << (res ? "yes" : "no") << "\n";
+    }
+
+    return 0;
+}
