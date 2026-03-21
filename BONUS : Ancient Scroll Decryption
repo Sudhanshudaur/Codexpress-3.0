@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    unordered_set<string> dict;
+    unordered_map<int, vector<string>> memo;
+    string s;
+
+    vector<string> dfs(int start) {
+        if (memo.count(start)) return memo[start];
+
+        vector<string> res;
+
+        // reached end → valid sentence
+        if (start == s.size()) {
+            res.push_back("");
+            return memo[start] = res;
+        }
+
+        string curr = "";
+
+        for (int end = start; end < s.size(); end++) {
+            curr += s[end];
+
+            // if substring is valid word
+            if (dict.count(curr)) {
+                vector<string> next = dfs(end + 1);
+
+                for (string &sentence : next) {
+                    if (sentence == "")
+                        res.push_back(curr);
+                    else
+                        res.push_back(curr + " " + sentence);
+                }
+            }
+        }
+
+        return memo[start] = res;
+    }
+
+    vector<string> wordBreak(string S, vector<string>& wordDict) {
+        s = S;
+        dict.clear();
+        memo.clear();
+
+        for (auto &w : wordDict) dict.insert(w);
+
+        return dfs(0);
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        string S;
+        cin >> S;
+
+        int N;
+        cin >> N;
+
+        vector<string> wordDict(N);
+        for (int i = 0; i < N; i++) {
+            cin >> wordDict[i];
+        }
+
+        Solution obj;
+        vector<string> ans = obj.wordBreak(S, wordDict);
+
+        if (ans.empty()) {
+            cout << "\n";
+        } else {
+            for (auto &s : ans) {
+                cout << s << "\n";
+            }
+        }
+    }
+
+    return 0;
+}
